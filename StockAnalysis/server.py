@@ -1,7 +1,7 @@
 from shiny import render
 
 
-def server(input, output, session):
+def app_server(input, output, session):
     @output
     @render.text
     def txt():
