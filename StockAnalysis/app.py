@@ -22,4 +22,7 @@ from shiny import App
 from ui import app_ui
 from server import app_server
 
-app = App(app_ui, app_server)
+from pathlib import Path
+
+www_dir = Path(__file__).parent / "www"
+app = App(app_ui, app_server, static_assets=www_dir)
