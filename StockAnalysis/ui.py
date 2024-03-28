@@ -1,5 +1,6 @@
 from shiny import ui
 import shinyswatch
+from shinywidgets import output_widget
 
 TITLE = "STOCK Analysis"
 
@@ -13,13 +14,30 @@ app_ui = ui.page_navbar(
         "- ANALYSIS -",
         ui.layout_sidebar(
             ui.panel_sidebar(
-                ui.h2("Select company"), ui.input_slider("n", "N", 0, 100, 20), width=3
+                ui.h2("Select a stock"),
+                ui.input_selectize(
+                    "stock_symbol",
+                    "Stock Symbol",
+                    ["AAPL", "GOOG", "MSFT"],
+                    selected="MSFT",
+                    multiple=False,
+                ),
+                width=3,
             ),
             ui.panel_main(
-                ui.h2(ui.output_text("txt")),
+                ui.h2(ui.output_text("symbol")),
+                ui.div(
+                    output_widget(
+                        "stock_chart_widget",
+                        width="auto",
+                        height="auto",  # class_="card"
+                    )
+                ),
                 ui.navset_card_pill(
-                    ui.nav_panel("Company Summary", "TODO - Summary"),
-                    ui.nav_panel("Income Statement", "TODO - Income Statement"),
+                    ui.nav_panel("Company Summary", ui.output_ui("stock_info_ui")),
+                    ui.nav_panel(
+                        "Income Statement", ui.output_table("income_statement_table")
+                    ),
                 ),
             ),
         ),
