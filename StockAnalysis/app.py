@@ -18,6 +18,9 @@
 # rsconnect list (optional)
 # rsconnect deploy shiny . --entrypoint app:app
 
+# TODO: statements
+# TODO: totalPay
+
 from shiny import App
 from ui import app_ui
 from server import app_server

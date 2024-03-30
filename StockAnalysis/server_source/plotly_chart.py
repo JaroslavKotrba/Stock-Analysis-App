@@ -15,8 +15,8 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
         data_frame=stock_df.set_index("Date"),
         color_discrete_map={
             "Close": "#2C3E50",
-            "mavg_short": "#E31A1C",
-            "mavg_long": "#18BC9C",
+            "mavg_short": "#0000FF",
+            "mavg_long": "#158cba",
         },
         title="Stock Chart",
     )
