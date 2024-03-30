@@ -11,7 +11,7 @@ from server_source.plotly_chart import plotly_chart
 
 def app_server(input, output, session):
 
-    # Selected Stock
+    # Selected stock
     @output
     @render.ui
     def symbol():
