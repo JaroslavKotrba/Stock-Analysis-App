@@ -24,6 +24,8 @@ stock_info = stock.info
 stock_info
 
 stock_incomestmt = stock.income_stmt
+stock_incomestmt.reset_index(inplace=True)
+stock_incomestmt.rename(columns={"index": "Financial Statement"}, inplace=True)
 stock_incomestmt
 
 stock_history = stock.history(period=period)

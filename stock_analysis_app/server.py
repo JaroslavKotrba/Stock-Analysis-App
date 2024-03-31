@@ -1,20 +1,24 @@
-from shiny import render
-from shiny import ui
+from shiny import render, ui, reactive
 from shinywidgets import render_widget
+import yfinance as yf
 
 from server_source.my_card import my_card
-from server_source.load_stock_data import load_stock_data
+from server_source.load_income_statement import load_income_statement
 from server_source.get_highest_paid_officer import get_highest_paid_officer
-from server_source.load_stock_history import load_stock_history
 from server_source.plotly_chart import plotly_chart
 
 
 def app_server(input, output, session):
 
+    # Reactive
+    @reactive.Calc
+    def stock():
+        return yf.Ticker(str(input.stock_symbol()))
+
     # Selected Stock
     @output
     @render.ui
-    def symbol():
+    def stock_abr():
         html_symbol = ui.HTML(
             f"Selected stock: <span style='color:#158cba;'>{input.stock_symbol()}</span>"
         )
@@ -24,15 +28,23 @@ def app_server(input, output, session):
     @output
     @render_widget
     def stock_chart():
-        stock_history = load_stock_history(input.stock_symbol(), "5y")  # CHANGE
-        fig = plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90)
+        period = "5y"  # CHANGE
+        window_mavg_short = 30
+        window_mavg_long = 90
+
+        stock_history = stock().history(period=period)
+        fig = plotly_chart(
+            stock_history,
+            window_mavg_short=window_mavg_short,
+            window_mavg_long=window_mavg_long,
+        )
         return fig
 
     # Company
     @output
     @render.ui
     def stock_info():
-        stock_info = load_stock_data(input.stock_symbol())
+        stock_info = stock().info
 
         box_ui = ui.row(
             ui.h5("Company Information"),
@@ -64,7 +76,7 @@ def app_server(input, output, session):
     @output
     @render.ui
     def stock_ceo():
-        stock_info = load_stock_data(input.stock_symbol())
+        stock_info = stock().info
         title, name, totalPay = get_highest_paid_officer(stock_info["companyOfficers"])
 
         box_ui = ui.row(
@@ -92,7 +104,7 @@ def app_server(input, output, session):
     @output
     @render.ui
     def stock_fin():
-        stock_info = load_stock_data(input.stock_symbol())
+        stock_info = stock().info
 
         box_ui = ui.row(
             ui.h5("Finantial Ratios"),
@@ -108,7 +120,7 @@ def app_server(input, output, session):
             ),
             my_card(
                 "Current Ratio",
-                "{:0,.1%}".format(stock_info["currentRatio"]),
+                "{:0,.2f}".format(stock_info["currentRatio"]),
                 bg_color="bg-dark",
             ),
             ui.div(style="height:18px;"),
@@ -148,4 +160,9 @@ def app_server(input, output, session):
 
         return box_ui
 
-        # Income Statement
+    # Income Statement
+    @output
+    @render.table
+    def income_stat():
+        stock_incomestmt = load_income_statement(stock())
+        return stock_incomestmt

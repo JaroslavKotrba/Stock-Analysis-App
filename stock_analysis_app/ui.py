@@ -28,7 +28,7 @@ app_ui = ui.page_navbar(
                 width=350,
             ),
             # Main
-            ui.h2(ui.output_ui("symbol")),
+            ui.h2(ui.output_ui("stock_abr")),
             ui.div(
                 output_widget(
                     "stock_chart",
@@ -51,7 +51,7 @@ app_ui = ui.page_navbar(
         # Main
         ui.navset_card_pill(
             ui.nav_panel("Company Summary", ui.output_ui("stock_fin")),
-            ui.nav_panel("Income Statement", "TODO - Income Statement"),
+            ui.nav_panel("Income Statement", ui.output_ui("income_stat")),
         ),
         # Footer
         ui.HTML(
