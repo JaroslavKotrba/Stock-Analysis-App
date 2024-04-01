@@ -18,9 +18,8 @@
 # rsconnect list (optional)
 # rsconnect deploy shiny . --entrypoint app:app
 
-# TODO: # Income Statement
 # TODO: links to social media
-# TODO: use functions to load data just once
+# TODO: download data
 
 from shiny import App
 from ui import app_ui

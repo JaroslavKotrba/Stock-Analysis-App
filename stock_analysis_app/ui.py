@@ -1,6 +1,9 @@
 from shiny import ui
 import shinyswatch
 from shinywidgets import output_widget
+from faicons import icon_svg  # sign icon
+
+from ui_source.get_sp500_tickers import get_sp500_tickers
 
 TITLE = "STOCK Analysis"
 
@@ -8,6 +11,9 @@ TITLE = "STOCK Analysis"
 page_dependencies = ui.tags.head(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css")
 )
+
+# Tickers
+tickers = get_sp500_tickers()
 
 app_ui = ui.page_navbar(
     shinyswatch.theme.lumen(),  # #158cba
@@ -20,9 +26,15 @@ app_ui = ui.page_navbar(
                 ui.input_selectize(
                     "stock_symbol",
                     "Stock Symbol",
-                    ["AAPL", "GOOG", "MSFT"],
-                    selected="MSFT",
+                    tickers,
+                    selected="MSFT | Microsoft",
                     multiple=False,
+                ),
+                ui.download_button(
+                    "downloadStockInfo",
+                    "Download stock_info.csv",
+                    icon=icon_svg("download"),
+                    class_="btn-primary",
                 ),
                 position="left",
                 width=350,
@@ -60,25 +72,9 @@ app_ui = ui.page_navbar(
     ),
     ui.nav_panel(
         "- ABOUT -",
-        ui.row(
-            ui.column(
-                3,
-                ui.panel_main(
-                    ui.panel_sidebar(
-                        ui.h2("Select company"),
-                        ui.input_slider("m", "N", 0, 100, 20),
-                    ),
-                ),
-            ),
-            ui.column(
-                9,
-                ui.panel_main(
-                    ui.navset_card_pill(
-                        ui.nav_panel("Company Summary", "TODO - Summary"),
-                        ui.nav_panel("Income Statement", "TODO - Income Statement"),
-                    ),
-                ),
-            ),
+        ui.navset_card_pill(
+            ui.nav_panel("Our Story", "TODO - Our Story"),
+            ui.nav_panel("Data Used", "TODO - Data Used"),
         ),
     ),
     title=ui.tags.div(

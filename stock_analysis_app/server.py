@@ -1,28 +1,42 @@
 from shiny import render, ui, reactive
 from shinywidgets import render_widget
+import pandas as pd
 import yfinance as yf
 
 from server_source.my_card import my_card
-from server_source.load_income_statement import load_income_statement
-from server_source.get_highest_paid_officer import get_highest_paid_officer
 from server_source.plotly_chart import plotly_chart
+from server_source.get_highest_paid_officer import get_highest_paid_officer
+from server_source.load_income_statement import load_income_statement
 
 
 def app_server(input, output, session):
 
-    # Reactive
+    # Reactive Stock
     @reactive.Calc
     def stock():
-        return yf.Ticker(str(input.stock_symbol()))
+        symbol = str(input.stock_symbol()).split(" | ")[0].strip()
+        return yf.Ticker(symbol)
 
     # Selected Stock
     @output
     @render.ui
     def stock_abr():
         html_symbol = ui.HTML(
-            f"Selected stock: <span style='color:#158cba;'>{input.stock_symbol()}</span>"
+            f"The selected stock: <span style='color:#158cba;'>{str(input.stock_symbol()).split(' | ')[1]}</span>"
         )
         return html_symbol
+
+    # Save Stock Info
+    @render.download(filename="stock_info.csv")
+    def downloadStockInfo():
+        stock_info = stock().info
+        df = pd.DataFrame(list(stock_info.items()), columns=["Feature", "Value"])
+        df = df[df["Feature"] != "companyOfficers"]
+        yield df.to_csv(index=False, sep=",")
+
+    # Save Stock History
+
+    # Save Stock Financial
 
     # Chart
     @output

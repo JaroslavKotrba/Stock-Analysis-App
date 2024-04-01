@@ -3,6 +3,7 @@
 # Libraries
 import numpy as np
 import pandas as pd
+import pandas_datareader as pdr
 import yfinance as yf
 import datetime as dt
 from plotly import express as px
@@ -20,7 +21,7 @@ window_mavg_long = 90
 stock = yf.Ticker(symbol)
 
 # Attributes
-stock_info = stock.info
+stock_info = stock.info  # TODO: save .csv
 stock_info
 
 stock_incomestmt = stock.income_stmt
@@ -110,3 +111,20 @@ fig = fig.update_yaxes(title="Share Price", tickprefix="$", gridcolor="#2c3e50")
 fig = fig.update_xaxes(title="", gridcolor="#2c3e50")
 
 fig
+
+### TICKERS
+
+
+def get_sp500_tickers():
+    table = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
+    sp500_df = table[0]
+    sp500_df["Symbol"] = sp500_df["Symbol"].str.replace(".", "-")
+    sp500_df["Ticker-Name"] = (
+        sp500_df["Symbol"].astype(str) + " | " + sp500_df["Security"].astype(str)
+    )
+
+    return sp500_df["Ticker-Name"].tolist()
+
+
+# Example usage
+stock = get_sp500_tickers()
