@@ -36,6 +36,18 @@ app_ui = ui.page_navbar(
                     icon=icon_svg("download"),
                     class_="btn-primary",
                 ),
+                ui.download_button(
+                    "downloadStockHistory",
+                    "Download stock_history.csv",
+                    icon=icon_svg("download"),
+                    class_="btn-primary",
+                ),
+                ui.download_button(
+                    "downloadStockFinancial",
+                    "Download stock_financial.csv",
+                    icon=icon_svg("download"),
+                    class_="btn-primary",
+                ),
                 position="left",
                 width=350,
             ),

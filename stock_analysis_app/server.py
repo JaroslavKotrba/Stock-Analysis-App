@@ -35,8 +35,17 @@ def app_server(input, output, session):
         yield df.to_csv(index=False, sep=",")
 
     # Save Stock History
+    @render.download(filename="stock_history.csv")
+    def downloadStockHistory():
+        period = "5y"  # CHANGE
+        stock_history = stock().history(period=period)
+        yield stock_history.to_csv(index=True, sep=",")
 
     # Save Stock Financial
+    @render.download(filename="stock_financial.csv")
+    def downloadStockFinancial():
+        stock_incomestmt = load_income_statement(stock())
+        yield stock_incomestmt.to_csv(index=False, sep=",")
 
     # Chart
     @output
@@ -83,7 +92,6 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-
         return box_ui
 
     # CEO
@@ -111,7 +119,6 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-
         return box_ui
 
     # Company Summary
@@ -171,7 +178,6 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-
         return box_ui
 
     # Income Statement
