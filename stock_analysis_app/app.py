@@ -19,7 +19,6 @@
 # rsconnect deploy shiny . --entrypoint app:app
 
 # TODO: links to social media
-# TODO: download data
 
 from shiny import App
 from ui import app_ui

@@ -9,7 +9,8 @@ TITLE = "STOCK Analysis"
 
 # Header
 page_dependencies = ui.tags.head(
-    ui.tags.link(rel="stylesheet", type="text/css", href="style.css")
+    ui.tags.link(rel="stylesheet", type="text/css", href="style.css"),
+    # ui.tags.link(rel="icon", type="image/png", href="www/eagle.png"),
 )
 
 # Tickers
@@ -30,6 +31,7 @@ app_ui = ui.page_navbar(
                     selected="MSFT | Microsoft",
                     multiple=False,
                 ),
+                ui.hr(),
                 ui.download_button(
                     "downloadStockInfo",
                     "Download stock_info.csv",
@@ -84,9 +86,14 @@ app_ui = ui.page_navbar(
     ),
     ui.nav_panel(
         "- ABOUT -",
+        # Main
         ui.navset_card_pill(
             ui.nav_panel("Our Story", "TODO - Our Story"),
             ui.nav_panel("Data Used", "TODO - Data Used"),
+        ),
+        # Footer
+        ui.HTML(
+            '<p>Author\'s projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>'
         ),
     ),
     title=ui.tags.div(

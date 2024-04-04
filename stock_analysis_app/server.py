@@ -21,10 +21,14 @@ def app_server(input, output, session):
     @output
     @render.ui
     def stock_abr():
-        html_symbol = ui.HTML(
-            f"The selected stock: <span style='color:#158cba;'>{str(input.stock_symbol()).split(' | ')[1]}</span>"
-        )
-        return html_symbol
+        if input.stock_symbol():
+            stock_symbol = str(input.stock_symbol()).split(" | ")[1]
+            html_content = f"The selected stock: <span style='color:#158cba;'>{stock_symbol}</span>"
+        else:
+            html_content = (
+                "<span style='color:red;'>STOCK has not been selected!</span>"
+            )
+        return ui.HTML(html_content)
 
     # Save Stock Info
     @render.download(filename="stock_info.csv")
@@ -51,7 +55,7 @@ def app_server(input, output, session):
     @output
     @render_widget
     def stock_chart():
-        period = "5y"  # CHANGE
+        period = "50y"  # CHANGE
         window_mavg_short = 30
         window_mavg_long = 90
 

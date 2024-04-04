@@ -7,6 +7,7 @@ import pandas_datareader as pdr
 import yfinance as yf
 import datetime as dt
 from plotly import express as px
+from prophet import Prophet
 
 ### INPUTS
 
@@ -21,7 +22,7 @@ window_mavg_long = 90
 stock = yf.Ticker(symbol)
 
 # Attributes
-stock_info = stock.info  # TODO: save .csv
+stock_info = stock.info
 stock_info
 
 stock_incomestmt = stock.income_stmt
@@ -80,24 +81,69 @@ stock_info["enterpriseValue"]
 
 # Stock moving average
 stock_df = stock_history[["Close"]].reset_index()
-stock_df["mavg_short"] = stock_df["Close"].rolling(window=window_mavg_short).mean()
-stock_df["mavg_long"] = stock_df["Close"].rolling(window=window_mavg_long).mean()
+stock_df = stock_df.rename(columns={"Date": "date"})
+stock_df = stock_df.rename(columns={"Close": "closing_price"})
+
+stock_df["mavg_short"] = (
+    stock_df["closing_price"].rolling(window=window_mavg_short).mean()
+)
+
+stock_df["mavg_long"] = (
+    stock_df["closing_price"].rolling(window=window_mavg_long).mean()
+)
 stock_df
+
+# Forecast
+prophet_df = stock_df[["date", "closing_price"]].rename(
+    columns={"date": "ds", "closing_price": "y"}
+)
+
+prophet_df["ds"] = prophet_df["ds"].dt.tz_localize(None)
+
+start_date = prophet_df["ds"].max() + pd.Timedelta(days=1)
+cutoff_date = prophet_df["ds"].max() - pd.DateOffset(years=1)
+
+model = Prophet()
+model.fit(prophet_df[prophet_df["ds"] > cutoff_date])
+
+future = model.make_future_dataframe(periods=120)
+
+forecast = model.predict(future)
+
+future_forecast = forecast[forecast["ds"] >= pd.to_datetime(start_date)][["ds", "yhat"]]
 
 ### VISUALISATION
 
 # Simple
-px.line(data_frame=stock_df.set_index("Date"))
+px.line(data_frame=stock_df.set_index("date"))
 
 # Advance
 fig = px.line(
-    data_frame=stock_df.set_index("Date"),
+    data_frame=stock_df.set_index("date"),
     color_discrete_map={
-        "Close": "#2C3E50",
+        "closing_price": "#2C3E50",
         "mavg_short": "#0000FF",
         "mavg_long": "#158cba",
     },
     title="Stock Chart",
+)
+
+fig.add_scatter(
+    x=future_forecast["ds"],
+    y=future_forecast["yhat"],
+    mode="lines",
+    name="forecast",
+    line=dict(color="#4191E1", dash="dot"),
+    hovertemplate="variable=forecast<br>"
+    + "date=%{x}<br>"
+    + "value=%{y:$,.2f}<br>"
+    + "<extra></extra>",  # This hides the trace name in the tooltip
+)
+
+fig.add_vline(
+    x=start_date,
+    line=dict(color="black", width=2, dash="dash"),
+    line_width=2,
 )
 
 fig = fig.update_layout(
