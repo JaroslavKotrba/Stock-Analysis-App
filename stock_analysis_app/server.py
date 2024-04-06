@@ -3,6 +3,7 @@ from shinywidgets import render_widget
 import pandas as pd
 import yfinance as yf
 
+from server_source.my_box import my_box
 from server_source.my_card import my_card
 from server_source.plotly_chart import plotly_chart
 from server_source.get_highest_paid_officer import get_highest_paid_officer
@@ -73,7 +74,7 @@ def app_server(input, output, session):
     def stock_info():
         stock_info = stock().info
 
-        box_ui = ui.row(
+        card_ui = ui.row(
             ui.h5("Company Information"),
             my_card(
                 "Industry",
@@ -96,7 +97,7 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-        return box_ui
+        return card_ui
 
     # CEO
     @output
@@ -105,7 +106,7 @@ def app_server(input, output, session):
         stock_info = stock().info
         title, name, totalPay = get_highest_paid_officer(stock_info["companyOfficers"])
 
-        box_ui = ui.row(
+        card_ui = ui.row(
             ui.h5("Finantial Ratios"),
             my_card(
                 "Title",
@@ -123,7 +124,7 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-        return box_ui
+        return card_ui
 
     # Company Summary
     @output
@@ -131,7 +132,7 @@ def app_server(input, output, session):
     def stock_fin():
         stock_info = stock().info
 
-        box_ui = ui.row(
+        card_ui = ui.row(
             ui.h5("Finantial Ratios"),
             my_card(
                 "Revenue Growth",
@@ -182,7 +183,7 @@ def app_server(input, output, session):
                 bg_color="bg-dark",
             ),
         )
-        return box_ui
+        return card_ui
 
     # Income Statement
     @output
@@ -190,3 +191,11 @@ def app_server(input, output, session):
     def income_stat():
         stock_incomestmt = load_income_statement(stock())
         return stock_incomestmt
+
+    # About Company
+    @output
+    @render.ui
+    def stock_about():
+        stock_info = stock().info
+        box_ui = my_box("Business Summary", stock_info["longBusinessSummary"])
+        return box_ui

@@ -33,7 +33,7 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
     model = Prophet()
     model.fit(prophet_df[prophet_df["ds"] > cutoff_date])
 
-    future = model.make_future_dataframe(periods=120)  # 4 months
+    future = model.make_future_dataframe(periods=120)  # forecast for 4 months
 
     forecast = model.predict(future)
 

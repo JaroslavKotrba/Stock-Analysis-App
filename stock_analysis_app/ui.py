@@ -73,7 +73,7 @@ app_ui = ui.page_navbar(
         ),
     ),
     ui.nav_panel(
-        "- FINANCIALS -",
+        "- FINANCIAL -",
         # Main
         ui.navset_card_pill(
             ui.nav_panel("Company Summary", ui.output_ui("stock_fin")),
@@ -88,7 +88,7 @@ app_ui = ui.page_navbar(
         "- ABOUT -",
         # Main
         ui.navset_card_pill(
-            ui.nav_panel("Our Story", "TODO - Our Story"),
+            ui.nav_panel("About Company", ui.output_ui("stock_about")),
             ui.nav_panel("Data Used", "TODO - Data Used"),
         ),
         # Footer
