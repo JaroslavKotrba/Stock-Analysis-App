@@ -89,7 +89,7 @@ app_ui = ui.page_navbar(
         # Main
         ui.navset_card_pill(
             ui.nav_panel("About Company", ui.output_ui("stock_about")),
-            ui.nav_panel("Data Used", "TODO - Data Used"),
+            ui.nav_panel("Data Used", ui.output_ui("stock_api")),
         ),
         # Footer
         ui.HTML(

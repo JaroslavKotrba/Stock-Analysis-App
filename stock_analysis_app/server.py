@@ -199,3 +199,13 @@ def app_server(input, output, session):
         stock_info = stock().info
         box_ui = my_box("Business Summary", stock_info["longBusinessSummary"])
         return box_ui
+
+    # About API
+    @output
+    @render.ui
+    def stock_api():
+        box_ui = my_box(
+            "Yahoo Finance API",
+            "The Yahoo Finance API provides a way to access the vast amount of financial data that Yahoo Finance holds. While Yahoo itself does not officially support or provide an API for accessing this information anymore, yfinance is a third-party library that emerged to fill this gap. yfinance offers for this app a way to download historical market data from Yahoo Finance, access financials, and get market summaries, among other functionalities.",
+        )
+        return box_ui
