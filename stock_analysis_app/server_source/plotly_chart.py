@@ -1,6 +1,5 @@
 from plotly import express as px
-import pandas as pd
-from prophet import Prophet
+from server_source.prophet_forecast import prophet_forecast
 
 
 def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
@@ -11,35 +10,18 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
     stock_df = stock_df.rename(columns={"Date": "date"})
     stock_df = stock_df.rename(columns={"Close": "closing_price"})
 
-    # Moving average
+    # Moving average short
     stock_df["mavg_short"] = (
         stock_df["closing_price"].rolling(window=window_mavg_short).mean()
     )
 
+    # Moving average long
     stock_df["mavg_long"] = (
         stock_df["closing_price"].rolling(window=window_mavg_long).mean()
     )
 
-    # Forecast with Prophet
-    prophet_df = stock_df[["date", "closing_price"]].rename(
-        columns={"date": "ds", "closing_price": "y"}
-    )
-
-    prophet_df["ds"] = prophet_df["ds"].dt.tz_localize(None)
-
-    start_date = prophet_df["ds"].max() + pd.Timedelta(days=1)
-    cutoff_date = prophet_df["ds"].max() - pd.DateOffset(years=2)  # training on 2 years
-
-    model = Prophet()
-    model.fit(prophet_df[prophet_df["ds"] > cutoff_date])
-
-    future = model.make_future_dataframe(periods=120)  # forecast for 4 months
-
-    forecast = model.predict(future)
-
-    future_forecast = forecast[forecast["ds"] >= pd.to_datetime(start_date)][
-        ["ds", "yhat"]
-    ]
+    # Forecasting
+    future_forecast, start_date = prophet_forecast(stock_df)
 
     # Main lines
     fig = px.line(
