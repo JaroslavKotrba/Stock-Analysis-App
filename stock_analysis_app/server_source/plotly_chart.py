@@ -35,17 +35,30 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
         # title="Stock Chart",
     )
 
+    hovertemplate_map = {
+        "closing_price": "Closing Price",
+        "mavg_short": "Short Moving Average",
+        "mavg_long": "Long Moving Average",
+    }
+
+    for trace in fig.data:
+        name = hovertemplate_map.get(trace.name, trace.name)
+        trace.hovertemplate = f"{name} (%{{x}}, $%{{y:.2f}})<extra></extra>"
+
+    newnames = {'closing_price':'CP', 'mavg_short':'SMA', 'mavg_long':'LMA'}
+    fig.for_each_trace(lambda t: t.update(name = newnames[t.name]))
+
     # Forecasting
     fig.add_scatter(
         x=future_forecast["ds"],
         y=future_forecast["yhat"],
         mode="lines",
-        name="forecast",
+        name="Forecast",
         line=dict(color="#4191E1", dash="dot"),
-        hovertemplate="variable=forecast<br>"
-        + "date=%{x}<br>"
-        + "value=%{y:$,.2f}<br>"
-        + "<extra></extra>",  # This hides the trace name in the tooltip
+        # hovertemplate="variable=forecast<br>"
+        # + "date=%{x}<br>"
+        # + "value=%{y:$,.2f}<br>"
+        # + "<extra></extra>",  # This hides the trace name in the tooltip
     )
 
     # Add vertical line to separate forecasting
@@ -61,10 +74,10 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
             rangeselector=dict(
                 buttons=list(
                     [
-                        dict(count=1, label="1m", step="month", stepmode="backward"),
-                        dict(count=6, label="6m", step="month", stepmode="backward"),
+                        # dict(count=1, label="1m", step="month", stepmode="backward"),
+                        # dict(count=6, label="6m", step="month", stepmode="backward"),
                         dict(count=1, label="YTD", step="year", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="backward"),
+                        # dict(count=1, label="1y", step="year", stepmode="backward"),
                         dict(count=3, label="3y", step="year", stepmode="backward"),
                         dict(count=5, label="5y", step="year", stepmode="backward"),
                         dict(step="all", label="All"),

@@ -18,6 +18,7 @@
 # rsconnect list (optional)
 # rsconnect deploy shiny . --entrypoint app:app
 
+# TODO: nice tickers
 # TODO: links to social media
 
 from shiny import App

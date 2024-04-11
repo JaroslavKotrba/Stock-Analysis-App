@@ -29,7 +29,7 @@ def prophet_forecast(stock_df):
     model.fit(train)
 
     future = model.make_future_dataframe(periods=120)  # forecast for 4 months
-    forecast = model.predict(future)
+    forecast = model.predict(future).round({"yhat": 2})
     future_forecast = forecast[forecast["ds"] >= pd.to_datetime(start_date)][
         ["ds", "yhat"]
     ]  # only forecasted values

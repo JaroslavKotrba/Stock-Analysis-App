@@ -104,7 +104,7 @@ app_ui = ui.page_navbar(
         ),
         ui.h6(
             " " + TITLE,
-            style="margin-top:25px; margin-right:140px; font-style:italic; font-weight:bold;",
+            style="margin-top:25px; margin-right:50px; font-style:italic; font-weight:bold;",
         ),
         style="display:flex;",
     ),
