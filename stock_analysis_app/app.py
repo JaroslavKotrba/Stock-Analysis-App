@@ -18,7 +18,7 @@
 # rsconnect list (optional)
 # rsconnect deploy shiny . --entrypoint app:app
 
-# TODO: nice tickers
+# TODO: to display the latest price of the stock
 # TODO: links to social media
 
 from shiny import App

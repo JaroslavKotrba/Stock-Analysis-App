@@ -24,7 +24,12 @@ def app_server(input, output, session):
     def stock_abr():
         if input.stock_symbol():
             stock_symbol = str(input.stock_symbol()).split(" | ")[1]
-            html_content = f"The selected stock: <span style='color:#158cba;'>{stock_symbol}</span>"
+
+            stock_history = stock().history(period="7d")
+            latest_close = stock_history["Close"].iloc[-1]
+            latest_price_formatted = f"${latest_close:,.2f}"
+
+            html_content = f"Selected: <span style='color:#158cba;'>{stock_symbol}</span> - <span style='color:green;'>{latest_price_formatted}</span>"
         else:
             html_content = (
                 "<span style='color:red;'>STOCK has not been selected!</span>"
