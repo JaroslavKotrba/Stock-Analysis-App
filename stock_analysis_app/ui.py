@@ -23,7 +23,7 @@ app_ui = ui.page_navbar(
         ui.layout_sidebar(
             # Sidebar
             ui.sidebar(
-                ui.h2("Select a stock"),
+                ui.div(style="height:7px;"),
                 ui.input_selectize(
                     "stock_symbol",
                     "Stock Symbol",
@@ -46,7 +46,7 @@ app_ui = ui.page_navbar(
                 ),
                 ui.download_button(
                     "downloadStockFinancial",
-                    "Download stock_financial.csv",
+                    "Download stock_fin.csv",
                     icon=icon_svg("download"),
                     class_="btn-primary",
                 ),
