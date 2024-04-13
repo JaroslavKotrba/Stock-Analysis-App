@@ -20,6 +20,7 @@
 
 # TODO: to display the latest price of the stock
 # TODO: links to social media
+# TODO: DCF calculation
 
 from shiny import App
 from ui import app_ui

@@ -7,6 +7,7 @@ import pandas_datareader as pdr
 import yfinance as yf
 import datetime as dt
 from plotly import express as px
+import plotly.graph_objects as go
 from prophet import Prophet
 
 ### INPUTS
@@ -114,49 +115,93 @@ future_forecast = forecast[forecast["ds"] >= pd.to_datetime(start_date)][["ds", 
 
 ### VISUALISATION
 
-# Simple
+# SIMPLE
 px.line(data_frame=stock_df.set_index("date"))
 
-# Advance
-fig = px.line(
-    data_frame=stock_df.set_index("date"),
-    color_discrete_map={
-        "closing_price": "#2C3E50",
-        "mavg_short": "#0000FF",
-        "mavg_long": "#158cba",
-    },
-    title="Stock Chart",
+# ADVANCE
+fig = go.Figure()
+
+# Lines
+fig.add_trace(
+    go.Scatter(
+        x=stock_df["date"],
+        y=stock_df["closing_price"],
+        mode="lines",
+        name="CP",
+        line=dict(color="#2C3E50"),
+        hovertemplate="Closing Price (%{x}, $%{y:.2f})<extra></extra>",
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=stock_df["date"],
+        y=stock_df["mavg_short"],
+        mode="lines",
+        name="SMA",
+        line=dict(color="#0000FF"),
+        hovertemplate="Short Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=stock_df["date"],
+        y=stock_df["mavg_long"],
+        mode="lines",
+        name="LMA",
+        line=dict(color="#158cba"),
+        hovertemplate="Long Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+    )
 )
 
-fig.add_scatter(
-    x=future_forecast["ds"],
-    y=future_forecast["yhat"],
-    mode="lines",
-    name="forecast",
-    line=dict(color="#4191E1", dash="dot"),
-    hovertemplate="variable=forecast<br>"
-    + "date=%{x}<br>"
-    + "value=%{y:$,.2f}<br>"
-    + "<extra></extra>",  # This hides the trace name in the tooltip
+fig.add_trace(
+    go.Scatter(
+        x=future_forecast["ds"],
+        y=future_forecast["yhat"],
+        mode="lines",
+        name="Forecast",
+        line=dict(color="#4191E1", dash="dot"),
+        hovertemplate="Forecast (%{x}, $%{y:.2f})<extra></extra>",
+    )
 )
 
-fig.add_vline(
-    x=start_date,
-    line=dict(color="black", width=2, dash="dash"),
-    line_width=2,
+# Add vertical line to separate past data from forecast
+fig.add_vline(x=start_date, line=dict(color="black", width=2, dash="dashdot"))
+
+# Configure range buttons for x-axis
+fig.update_layout(
+    xaxis=dict(
+        rangeselector=dict(
+            buttons=[
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=3, label="3y", step="year", stepmode="backward"),
+                dict(count=5, label="5y", step="year", stepmode="backward"),
+                dict(step="all", label="All"),
+            ],
+            font=dict(color="white"),  # text color of the buttons
+            bgcolor="#555",  # background color of the buttons
+            activecolor="#158cba",  # background color of the active button
+            x=-0.1,  # position x
+            y=-0.15,  # position y
+        ),
+        type="date",
+        gridcolor="#2c3e50",
+    )
 )
 
-fig = fig.update_layout(
+# Update y-axis properties
+fig.update_yaxes(title="Share Price", tickprefix="$", gridcolor="#2c3e50")
+
+# Update figure's layout for better appearance
+fig.update_layout(
     plot_bgcolor="rgba(0, 0, 0, 0)",
-    paper_bgcolor="rgba(0, 0, 0, 0)",
+    showlegend=True,
     legend_title_text="",
+    # modebar={'displayModeBar': False}  # This line disables the modebar
 )
 
-fig = fig.update_yaxes(title="Share Price", tickprefix="$", gridcolor="#2c3e50")
+# fig.update_layout(config={'displayModeBar': False})
 
-fig = fig.update_xaxes(title="", gridcolor="#2c3e50")
-
-fig
+fig.show(config={"displayModeBar": False})
 
 ### TICKERS
 
@@ -174,3 +219,6 @@ def get_sp500_tickers():
 
 # Example usage
 stock = get_sp500_tickers()
+
+### DCF CALCULATION
+# https://www.youtube.com/watch?v=Vi-BQx4gE3k
