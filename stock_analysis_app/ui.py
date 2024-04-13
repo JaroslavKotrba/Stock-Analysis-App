@@ -69,7 +69,15 @@ app_ui = ui.page_navbar(
         ),
         # Footer
         ui.HTML(
-            '<p>Author\'s projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>'
+            f"""
+            <div style="text-align:center;">
+                <p>Author's projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>
+                <a href="https://www.linkedin.com/in/jaroslav-kotrba/" target="_blank" style="font-size:24px;">{icon_svg("linkedin")}</a>
+                <a href="https://github.com/JaroslavKotrba" target="_blank" style="font-size:24px;">{icon_svg("github")}</a>
+                <a href="https://www.facebook.com/jaroslav.kotrba.9/" target="_blank" style="font-size:24px;">{icon_svg("facebook")}</a>
+                <p>Copyright &copy; 2024</p>
+            </div>
+            """
         ),
     ),
     ui.nav_panel(
@@ -81,7 +89,15 @@ app_ui = ui.page_navbar(
         ),
         # Footer
         ui.HTML(
-            '<p>Author\'s projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>'
+            f"""
+            <div style="text-align:center;">
+                <p>Author's projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>
+                <a href="https://www.linkedin.com/in/jaroslav-kotrba/" target="_blank" style="font-size:24px;">{icon_svg("linkedin")}</a>
+                <a href="https://github.com/JaroslavKotrba" target="_blank" style="font-size:24px;">{icon_svg("github")}</a>
+                <a href="https://www.facebook.com/jaroslav.kotrba.9/" target="_blank" style="font-size:24px;">{icon_svg("facebook")}</a>
+                <p>Copyright &copy; 2024</p>
+            </div>
+            """
         ),
     ),
     ui.nav_panel(
@@ -93,7 +109,15 @@ app_ui = ui.page_navbar(
         ),
         # Footer
         ui.HTML(
-            '<p>Author\'s projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>'
+            f"""
+            <div style="text-align:center;">
+                <p>Author's projects: <a href="https://jaroslavkotrba.com" style="text-decoration:none;" target="_blank">https://jaroslavkotrba.com</a></p>
+                <a href="https://www.linkedin.com/in/jaroslav-kotrba/" target="_blank" style="font-size:24px;">{icon_svg("linkedin")}</a>
+                <a href="https://github.com/JaroslavKotrba" target="_blank" style="font-size:24px;">{icon_svg("github")}</a>
+                <a href="https://www.facebook.com/jaroslav.kotrba.9/" target="_blank" style="font-size:24px;">{icon_svg("facebook")}</a>
+                <p>Copyright &copy; 2024</p>
+            </div>
+            """
         ),
     ),
     title=ui.tags.div(

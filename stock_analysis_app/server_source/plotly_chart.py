@@ -82,7 +82,7 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
                 bgcolor="#555",  # background color of the buttons
                 activecolor="#158cba",  # background color of the active button
                 x=-0.1,  # position x
-                y=-0.15,  # position y
+                y=-0.3,  # position y
             ),
             type="date",
             gridcolor="#2c3e50",
