@@ -12,7 +12,7 @@ from prophet import Prophet
 
 ### INPUTS
 
-symbol = "MSFT"
+symbol = "MSFT"  # "^GSPC"
 period = "5y"
 window_mavg_short = 30
 window_mavg_long = 90

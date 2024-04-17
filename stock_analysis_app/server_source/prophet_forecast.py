@@ -2,7 +2,7 @@ import pandas as pd
 from prophet import Prophet
 
 
-def prophet_forecast(stock_df):
+def prophet_forecast(stock_df, months):
     """
     Function to create forecasting model
     """
@@ -28,7 +28,9 @@ def prophet_forecast(stock_df):
     train = prophet_df[prophet_df["ds"] > cutoff_date]
     model.fit(train)
 
-    future = model.make_future_dataframe(periods=120)  # forecast for 4 months
+    future = model.make_future_dataframe(
+        periods=30 * months
+    )  # forecast for 4 months (default)
     forecast = model.predict(future).round({"yhat": 2})
     future_forecast = forecast[forecast["ds"] >= pd.to_datetime(start_date)][
         ["ds", "yhat"]

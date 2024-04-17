@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 from server_source.prophet_forecast import prophet_forecast
 
 
-def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
+def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=90):
     """
     Function to create a Plotly chart using Graph Objects
     """
@@ -18,7 +18,7 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
     )
 
     # Forecasting
-    future_forecast, start_date = prophet_forecast(stock_df)
+    future_forecast, start_date = prophet_forecast(stock_df, months)
 
     fig = go.Figure()
 
@@ -74,6 +74,7 @@ def plotly_chart(stock_history, window_mavg_short=30, window_mavg_long=90):
             rangeselector=dict(
                 buttons=[
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
+                    # dict(count=1, label="1y", step="year", stepmode="backward"),
                     dict(count=3, label="3y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(step="all", label="All"),

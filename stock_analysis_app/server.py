@@ -68,6 +68,7 @@ def app_server(input, output, session):
         stock_history = stock().history(period=period)
         fig = plotly_chart(
             stock_history,
+            months=int(input.months_to_predict()),
             window_mavg_short=window_mavg_short,
             window_mavg_long=window_mavg_long,
         )

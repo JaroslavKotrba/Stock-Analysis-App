@@ -62,6 +62,14 @@ app_ui = ui.page_navbar(
                     height="auto",
                 )
             ),
+            ui.input_selectize(
+                "months_to_predict",
+                "Select how many months in future",
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12],
+                selected=4,
+                multiple=False,
+                # width="150px",
+            ),
             ui.navset_card_pill(
                 ui.nav_panel("Company", ui.output_ui("stock_info")),
                 ui.nav_panel("CEO", ui.output_ui("stock_ceo")),
