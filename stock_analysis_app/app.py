@@ -18,8 +18,6 @@
 # rsconnect list (optional)
 # rsconnect deploy shiny . --entrypoint app:app
 
-# TODO: to display the latest price of the stock
-# TODO: links to social media
 # TODO: DCF calculation
 
 from shiny import App

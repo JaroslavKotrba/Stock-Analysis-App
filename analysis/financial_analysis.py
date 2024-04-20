@@ -167,6 +167,12 @@ fig.add_trace(
 # Add vertical line to separate past data from forecast
 fig.add_vline(x=start_date, line=dict(color="black", width=2, dash="dashdot"))
 
+# 0 y line
+fig.add_hline(
+    y=0,
+    line=dict(color="#2c3e50", width=1),
+)
+
 # Configure range buttons for x-axis
 fig.update_layout(
     xaxis=dict(
