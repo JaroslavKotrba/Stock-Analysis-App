@@ -187,7 +187,7 @@ fig.update_layout(
             bgcolor="#555",  # background color of the buttons
             activecolor="#158cba",  # background color of the active button
             x=-0.1,  # position x
-            y=-0.15,  # position y
+            y=-0.3,  # position y
         ),
         type="date",
         gridcolor="#2c3e50",
