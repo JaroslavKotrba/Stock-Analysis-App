@@ -5,7 +5,7 @@ from faicons import icon_svg  # sign icon
 
 from ui_source.get_sp500_tickers import get_sp500_tickers
 
-TITLE = "STOCK Analysis"
+TITLE = "Stock Analysis"
 
 # Header
 page_dependencies = ui.tags.head(
@@ -136,7 +136,7 @@ app_ui = ui.page_navbar(
         ),
         ui.h6(
             " " + TITLE,
-            style="margin-top:25px; margin-right:50px; font-style:italic; font-weight:bold;",
+            style="margin-top:26.5px; margin-right:50px; font-family:'Baskerville', serif; font-weight: 900; font-style:italic; color:#158cba;",  # text-shadow: -1px -1px 0 #158cba, 1px -1px 0 #158cba, -1px 1px 0 #158cba, 1px 1px 0 #158cba;
         ),
         style="display:flex;",
     ),

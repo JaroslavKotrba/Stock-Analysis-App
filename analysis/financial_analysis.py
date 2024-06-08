@@ -104,7 +104,15 @@ prophet_df["ds"] = prophet_df["ds"].dt.tz_localize(None)
 start_date = prophet_df["ds"].max() + pd.Timedelta(days=1)
 cutoff_date = prophet_df["ds"].max() - pd.DateOffset(years=1)
 
-model = Prophet()
+model = Prophet(
+    changepoint_prior_scale=0.05,
+    holidays_prior_scale=15,
+    seasonality_prior_scale=10,
+    weekly_seasonality=False,
+    yearly_seasonality=True,
+    daily_seasonality=False,
+)
+
 model.fit(prophet_df[prophet_df["ds"] > cutoff_date])
 
 future = model.make_future_dataframe(periods=120)
@@ -128,10 +136,14 @@ fig.add_trace(
         y=stock_df["closing_price"],
         mode="lines",
         name="CP",
-        line=dict(color="#2C3E50"),
-        hovertemplate="Closing Price (%{x}, $%{y:.2f})<extra></extra>",
+        line=dict(color="#008000"),
+        fill="tozeroy",  # Fill to zero on the y-axis
+        fillcolor="rgba(0, 128, 0, 0.5)",  # Green color with 50% transparency
+        hovertemplate="Closing Price (%{x}, $%{y:,.2f})",
     )
 )
+
+
 fig.add_trace(
     go.Scatter(
         x=stock_df["date"],
@@ -139,9 +151,10 @@ fig.add_trace(
         mode="lines",
         name="SMA",
         line=dict(color="#0000FF"),
-        hovertemplate="Short Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+        hovertemplate="Short Moving Average (%{x}, $%{y:,.2f})",
     )
 )
+
 fig.add_trace(
     go.Scatter(
         x=stock_df["date"],
@@ -149,7 +162,7 @@ fig.add_trace(
         mode="lines",
         name="LMA",
         line=dict(color="#158cba"),
-        hovertemplate="Long Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+        hovertemplate="Long Moving Average (%{x}, $%{y:,.2f})",
     )
 )
 
@@ -158,9 +171,11 @@ fig.add_trace(
         x=future_forecast["ds"],
         y=future_forecast["yhat"],
         mode="lines",
-        name="Forecast",
+        name="Fc",
         line=dict(color="#4191E1", dash="dot"),
-        hovertemplate="Forecast (%{x}, $%{y:.2f})<extra></extra>",
+        fill="tozeroy",  # Fill to zero on the y-axis
+        fillcolor="rgba(65, 145, 225, 0.5)",  # Blue color with 50% transparency
+        hovertemplate="Forecast (%{x}, $%{y:,.2f})",
     )
 )
 
@@ -179,6 +194,7 @@ fig.update_layout(
         rangeselector=dict(
             buttons=[
                 dict(count=1, label="YTD", step="year", stepmode="todate"),
+                # dict(count=1, label="1y", step="year", stepmode="backward"),
                 dict(count=3, label="3y", step="year", stepmode="backward"),
                 dict(count=5, label="5y", step="year", stepmode="backward"),
                 dict(step="all", label="All"),

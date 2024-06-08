@@ -4,7 +4,8 @@
 
 # INSTALLATION
 # https://shiny.posit.co/py/docs/install.html
-# conda create -n stock2 python=3.11
+# conda create -n stock python=3.11
+# conda env remove --name stock
 # extension "Shiny for Python"
 # pip install shiny
 # shiny run
@@ -13,10 +14,10 @@
 # https://login.shinyapps.io/login
 # pip install rsconnect-python
 # pip freeze > requirements.txt
-# conda env export --name stock2 > environment.yml (optional)
+# conda env export --name stock > environment.yml (optional)
 # rsconnect add --account jaroslavkotrba --name jaroslavkotrba --token XXXXXXXXXXXXXXXXXXXXXXXXXX --secret XXXXXXXXXXXXXXXXXXXXXXXXXX
 # rsconnect list (optional)
-# rsconnect deploy shiny . --entrypoint app:app
+# rsconnect deploy shiny . --entrypoint app:app --name jaroslavkotrba --title "stock_analysis_app"
 
 # TODO: DCF calculation
 

@@ -18,7 +18,9 @@ def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=9
     )
 
     # Forecasting
-    future_forecast, start_date = prophet_forecast(stock_df, months)
+    future_forecast, start_date = prophet_forecast(
+        stock_df, months, train=3
+    )  # trained on 3 years by default
 
     fig = go.Figure()
 
@@ -29,10 +31,13 @@ def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=9
             y=stock_df["closing_price"],
             mode="lines",
             name="CP",
-            line=dict(color="#2C3E50"),
-            hovertemplate="Closing Price (%{x}, $%{y:.2f})<extra></extra>",
+            line=dict(color="#008000"),
+            fill="tozeroy",  # Fill to zero on the y-axis
+            fillcolor="rgba(0, 128, 0, 0.5)",  # Green color with 50% transparency
+            hovertemplate="Closing Price (%{x}, $%{y:,.2f})",
         )
     )
+
     fig.add_trace(
         go.Scatter(
             x=stock_df["date"],
@@ -40,9 +45,10 @@ def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=9
             mode="lines",
             name="SMA",
             line=dict(color="#0000FF"),
-            hovertemplate="Short Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+            hovertemplate="Short Moving Average (%{x}, $%{y:,.2f})",
         )
     )
+
     fig.add_trace(
         go.Scatter(
             x=stock_df["date"],
@@ -50,7 +56,7 @@ def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=9
             mode="lines",
             name="LMA",
             line=dict(color="#158cba"),
-            hovertemplate="Long Moving Average (%{x}, $%{y:.2f})<extra></extra>",
+            hovertemplate="Long Moving Average (%{x}, $%{y:,.2f})",
         )
     )
 
@@ -59,9 +65,11 @@ def plotly_chart(stock_history, months, window_mavg_short=30, window_mavg_long=9
             x=future_forecast["ds"],
             y=future_forecast["yhat"],
             mode="lines",
-            name="Forecast",
+            name="Fc",
             line=dict(color="#4191E1", dash="dot"),
-            hovertemplate="Forecast (%{x}, $%{y:.2f})<extra></extra>",
+            fill="tozeroy",  # Fill to zero on the y-axis
+            fillcolor="rgba(65, 145, 225, 0.5)",  # Blue color with 50% transparency
+            hovertemplate="Forecast (%{x}, $%{y:,.2f})",
         )
     )
 

@@ -2,7 +2,7 @@ import pandas as pd
 from prophet import Prophet
 
 
-def prophet_forecast(stock_df, months):
+def prophet_forecast(stock_df, months, train):
     """
     Function to create forecasting model
     """
@@ -13,7 +13,7 @@ def prophet_forecast(stock_df, months):
     prophet_df["ds"] = prophet_df["ds"].dt.tz_localize(None)
 
     start_date = prophet_df["ds"].max() + pd.Timedelta(days=1)
-    cutoff_date = prophet_df["ds"].max() - pd.DateOffset(years=2)  # training on 2 years
+    cutoff_date = prophet_df["ds"].max() - pd.DateOffset(years=train)  # training on 3 years
 
     model = Prophet(
         changepoint_prior_scale=0.05,
