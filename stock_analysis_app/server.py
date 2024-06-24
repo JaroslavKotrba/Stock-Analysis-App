@@ -110,27 +110,35 @@ def app_server(input, output, session):
     @render.ui
     def stock_ceo():
         stock_info = stock().info
-        title, name, totalPay = get_highest_paid_officer(stock_info["companyOfficers"])
 
-        card_ui = ui.row(
-            ui.h5("Finantial Ratios"),
-            my_card(
-                "Title",
-                title,
-                bg_color="bg-dark",
-            ),
-            my_card(
-                "Name",
-                name,
-                bg_color="bg-primary",
-            ),
-            my_card(
-                "Total Pay",
-                "${:0,.0f}".format(totalPay),
-                bg_color="bg-dark",
-            ),
-        )
-        return card_ui
+        # Check if 'companyOfficers' is available in stock_info
+        if "companyOfficers" in stock_info:
+            title, name, totalPay = get_highest_paid_officer(
+                stock_info["companyOfficers"]
+            )
+
+            card_ui = ui.row(
+                ui.h5("Company CEO"),
+                my_card(
+                    "Title",
+                    title,
+                    bg_color="bg-dark",
+                ),
+                my_card(
+                    "Name",
+                    name,
+                    bg_color="bg-primary",
+                ),
+                my_card(
+                    "Total Pay",
+                    "${:0,.0f}".format(totalPay),
+                    bg_color="bg-dark",
+                ),
+            )
+            return card_ui
+
+        else:
+            return "No information about officers available."
 
     # Company Summary
     @output
