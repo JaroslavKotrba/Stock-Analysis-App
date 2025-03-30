@@ -102,5 +102,5 @@ wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_170473120541
 webencodings==0.5.1
 websockets==12.0
 widgetsnbextension==4.0.10
-yfinance==0.2.37
+yfinance==0.2.54
 zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1695255097490/work
